@@ -1,0 +1,64 @@
+﻿<Window x:Class="WPFTrackingBC.ContainerDetails"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFTrackingBC" WindowStartupLocation="CenterScreen"
+        mc:Ignorable="d"  WindowStyle="None"  ResizeMode="NoResize"  Deactivated="Window_Deactivated"
+        Title="ContainerDetails" Height="340" Width="340">
+    <Border BorderBrush="Black" BorderThickness="1">
+        <Grid>
+            <Grid.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="White" Offset="0"/>
+                    <GradientStop Color="LightGray" Offset="1"/>
+                </LinearGradientBrush>
+            </Grid.Background>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Background="#074A63" VerticalAlignment="Stretch">
+                <TextBlock Text="Container Details" FontWeight="Bold" Foreground="#69C6F1" TextAlignment="Center" VerticalAlignment="Top" Padding="0 10"/>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="110"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="ContainerId:" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0 10 0 0" Visibility="Collapsed"/>
+                <TextBox x:Name="txtContainerId" Grid.Column="1" Margin="12 20 12 5" IsEnabled="False" Visibility="Collapsed"/>
+                <TextBlock Text="Container Name:" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtContainerName" Grid.Column="1" Grid.Row="1" Margin="12 5"/>
+                <TextBlock Text="Container Weight:" Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtContainerWeight" Grid.Column="1" Grid.Row="2" Margin="12 5"/>
+                <TextBlock Text="Material Quantity:" Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtQuantity" Grid.Column="1" Grid.Row="3" Margin="12 5"/>
+                <TextBlock Text="Source:" Grid.Row="4" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtSource" Grid.Column="1" Grid.Row="4" Margin="12 5"/>
+                <TextBlock Text="Destination:" Grid.Row="5" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <TextBox x:Name="txtDestination" Grid.Column="1" Grid.Row="5" Margin="12 5"/>
+                <!--<TextBlock Text="Supplier:" Grid.Row="6" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <ComboBox x:Name="cmbSupplier" Grid.Column="1" Grid.Row="6" Margin="12 5"/>-->
+                <Grid Grid.Row="7" Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="btnClose"  Background="#074A63" Foreground="White" Content="Close" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Width="90" Margin="15 5" Padding="5" Click="btnClose_Click"/>
+                    <Button x:Name="btnSave"  Background="#074A63" Foreground="White" Content="Initiate" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Width="90" Margin="15 5" Padding="5"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>
