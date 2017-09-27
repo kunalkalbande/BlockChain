@@ -343,10 +343,34 @@
                             <StackPanel Orientation="Vertical" Grid.Column="2" HorizontalAlignment="Center">
                                 <TextBlock x:Name="txtdocname" Text="Document1.pdf" Foreground="#074A63" FontSize="14" FontWeight="Bold" Margin="15"/>
                                 <StackPanel x:Name="stkAppprover">
+                                    <StackPanel.Style>
+                                        <Style TargetType="StackPanel">
+                                            <Setter Property="IsEnabled" Value="True">
+                                                
+                                            </Setter>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=txtdocname,Path=Text}" Value="Document1.pdf">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
                                     <Button x:Name="btnSave" Content="Approve" BorderBrush="Transparent" Background="#074A63" Foreground="white"  Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Width="90" Margin="15" Padding="5" Click="btnSave_Click"/>
                                     <Button x:Name="btnClose" Content="Reject" BorderBrush="Transparent" Background="#074A63" Foreground="white" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Width="90" Padding="5" Click="btnClose_Click" />
                                 </StackPanel>
                                 <StackPanel x:Name="stkWeight" Visibility="Collapsed" >
+                                    <StackPanel.Style>
+                                        <Style TargetType="StackPanel">
+                                            <Setter Property="IsEnabled" Value="True">
+
+                                            </Setter>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=txtdocname,Path=Text}" Value="Document1.pdf">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
                                     <TextBox x:Name="txtWeight"   Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Width="90" Margin="15" Padding="5"/>
                                     <Button x:Name="btnCheckWeight" Content="   Approve &amp;&#xa; Check Weight" HorizontalContentAlignment="Center" Padding="5"  BorderBrush="Transparent" Background="#074A63" Foreground="white" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Width="90"   Click="btnCheckWeight_Click">
                                      
@@ -354,6 +378,18 @@
                                     <Button x:Name="btnRejectWeighing" Content="Reject" BorderBrush="Transparent" Background="#074A63" Foreground="white" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Width="90"  Padding="5" Click="btnRejectWeighing_Click"/>
                                 </StackPanel>
                                 <StackPanel x:Name="stkExporter">
+                                    <StackPanel.Style>
+                                        <Style TargetType="StackPanel">
+                                            <Setter Property="IsEnabled" Value="True">
+
+                                            </Setter>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ElementName=txtdocname,Path=Text}" Value="Document1.pdf">
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </StackPanel.Style>
                                     <TextBlock Text="Reason"/>
                                     <TextBox x:Name="txtReason"/>
                                     <Button x:Name="btnExport" Content="Approve" BorderBrush="Transparent" Background="#074A63" Foreground="white"  Grid.Column="1" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center" Width="90" Margin="15" Padding="5" Click="btnExport_Click">
