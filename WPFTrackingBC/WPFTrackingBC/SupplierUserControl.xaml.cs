@@ -35,34 +35,42 @@ namespace WPFTrackingBC
         int Amount = 0;
         private async void SupplierUserControl_Loaded(object sender, RoutedEventArgs e)
         {
+            prg.Visibility = Visibility.Visible;
+            prg1.Visibility = Visibility.Visible;
             this.DataContext = vm;
             vm.Supplier = App.UserName;
             vm.ContainerList = new ObservableCollection<ShipmentDetails>();
-
+            vm.PaymentDetails = new ObservableCollection<PaymentDetails>();
             vm.Bank = "N/A";
-            GetTransactionDetails();
+            await GetTransactionDetails();
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 10);
             dispatcherTimer.Start();
+            prg.Visibility = Visibility.Collapsed;
+            prg1.Visibility = Visibility.Collapsed;
         }
 
-        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        private async void dispatcherTimer_Tick(object sender, EventArgs e)
         {
-            GetTransactionDetails();
+           await GetTransactionDetails();
         }
 
-        private async void GetTransactionDetails()
+        private async Task<bool> GetTransactionDetails()
         {
+           
+               var details = new ObservableCollection<PaymentDetails>( await APICall.GetPaymentDetails(App.UserName));
           
-            vm.PaymentDetails = new ObservableCollection<PaymentDetails>(await APICall.GetPaymentDetails(App.UserName));
-            var supplierShipment = (await APICall.GetShipmentDetail(App.UserName)).Where(x=> !vm.PaymentDetails.Select(y=>y.ContainerId).Contains(x.ContainerId)).Select(x=>x).ToList() ;
 
-            vm.PaymentDetails.ToList().ForEach(x => { vm.Balance += x.Quantity; vm.Bank = x.Bank; vm.Supplier = x.SupplierName; x.Status = Status.GatedIn; });
-            supplierShipment.ForEach(x => vm.PaymentDetails.Add(new PaymentDetails() {ContainerId=x.ContainerId, ContainerName = x.ContainerName, Quantity = 0, Unit = x.Quantity ,Status=Status.Initiated}));
-            UpdateStatus();
-            TrackShipmentStatus();
+            //vm.PaymentDetails.ToList().AddRange((_paymentdetail).Where(x => !vm.PaymentDetails.Select(y => y.ContainerId).Contains(x.ContainerId)).Select(x => x).ToList());
+            var supplierShipment = (await APICall.GetShipmentDetail(App.UserName)).Where(x=> !details.Select(y=>y.ContainerId).Contains(x.ContainerId)).Select(x=>x).ToList() ;
+            vm.Balance = 0;
+            details.ToList().ForEach(x => { vm.Balance += x.Quantity; vm.Bank = x.Bank; if (x.Quantity > 0) x.Status = Status.GatedIn; });
+            supplierShipment.ForEach(x => details.Add(new PaymentDetails() {ContainerId=x.ContainerId, ContainerName = x.ContainerName, Quantity = 0, Unit = x.Quantity }));
+            await UpdateStatus(details.ToList());
+            vm.PaymentDetails = details;
+            await TrackShipmentStatus();
 
-
+            return true;
         }
         private async Task<bool> TrackShipmentStatus()
         {
@@ -115,10 +123,9 @@ namespace WPFTrackingBC
                 return false;
             }
         }
-        private async void UpdateStatus()
+        private async Task UpdateStatus(List<PaymentDetails> contaiinerList)
         {
           
-            var contaiinerList=vm.PaymentDetails.Where(x => x.Status != Status.GatedIn).ToList();
             foreach (var container in contaiinerList)
             {
                 container.Status= (Status)(await APICall.GetContainerStatus(container.ContainerId));
@@ -129,6 +136,7 @@ namespace WPFTrackingBC
         private void btnLogOut_Click(object sender, RoutedEventArgs e)
         {
             App.mainWindow.AddChild(new LoginUsercontrol());
+            dispatcherTimer.Stop();
         }
 
         private async void Approve_Click(object sender, RoutedEventArgs e)
@@ -156,6 +164,8 @@ namespace WPFTrackingBC
                 Destination = data.Destination
             };
             await APICall.AddShipmentStatus(shipmentRequest.Id, shipmentRequest);
+            prg.Visibility = Visibility.Collapsed;
+            prg1.Visibility = Visibility.Collapsed;
         }
     }
 }

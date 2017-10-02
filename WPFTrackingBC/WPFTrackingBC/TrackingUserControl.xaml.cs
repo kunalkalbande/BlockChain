@@ -309,21 +309,24 @@ namespace WPFTrackingBC
 
         private void listDoc_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var doc = (ApprovalsDetails)listDoc.SelectedItem;
-            txtdocname.Text = ((ApprovalsDetails)listDoc.SelectedItem).Document;
-            webdoc.Source = new Uri(((ApprovalsDetails)listDoc.SelectedItem).Url);
-            if (doc._status == 0 && App.UserType == UserType.Excise && Container.Status==Status.Initiated)
+            if (listDoc.SelectedItem != null)
             {
-                stkAppprover.Visibility = Visibility.Visible;
-            }
-            else if (doc._status == 0 &&  App.UserType == UserType.Custom && Container.Status == Status.WeighingApproved)
-            {
-                stkAppprover.Visibility = Visibility.Visible;
-                
-            }
-            else
-            {
-                stkAppprover.Visibility = Visibility.Collapsed;
+                var doc = (ApprovalsDetails)listDoc.SelectedItem;
+                txtdocname.Text = ((ApprovalsDetails)listDoc.SelectedItem).Document;
+                webdoc.Source = new Uri(((ApprovalsDetails)listDoc.SelectedItem).Url);
+                if (doc._status == 0 && App.UserType == UserType.Excise && Container.Status == Status.Initiated)
+                {
+                    stkAppprover.Visibility = Visibility.Visible;
+                }
+                else if (doc._status == 0 && App.UserType == UserType.Custom && Container.Status == Status.WeighingApproved)
+                {
+                    stkAppprover.Visibility = Visibility.Visible;
+
+                }
+                else
+                {
+                    stkAppprover.Visibility = Visibility.Collapsed;
+                }
             }
         }
 
@@ -391,7 +394,7 @@ namespace WPFTrackingBC
 
                     }
 
-                if (detail.Where(c => c.Status == ApprovalStatus.Approved).Count() == 2 && Container.Status == Status.Initiated && App.UserType == UserType.Excise && !Approved)
+                if (detail.Where(c => c.Status == ApprovalStatus.Approved).Count() == 2 && TrackingDetails.Count==8 && Container.Status == Status.Initiated && App.UserType == UserType.Excise && !Approved)
                 {
                     Approved = true;
                     Container._status = (int)Status.ExciseApproved;

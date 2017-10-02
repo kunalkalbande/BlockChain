@@ -10,13 +10,13 @@ namespace DeployTrackingContract
 {
     class Program
     {
-        static Nethereum.JsonRpc.Client.IClient client = new Nethereum.JsonRpc.Client.RpcClient(new Uri("http://synbcksmb.eastasia.cloudapp.azure.com:8545"));
-        public Nethereum.Web3.Web3 web3 = new Nethereum.Web3.Web3();
+        static Nethereum.JsonRpc.Client.IClient client = new Nethereum.JsonRpc.Client.RpcClient(new Uri("http://synbckaam.southcentralus.cloudapp.azure.com:8545"));
+        public Nethereum.Web3.Web3 web3 = new Nethereum.Web3.Web3(client);
         Nethereum.Web3.Contract paymentContract;
-        public string senderAddress = //"0x2d093225389fbd83a32150b46efd35665aeea7d3";
-        "0x12890d2cce102216644c59dae5baed380d84830c";
-        public string password = //"Pulsar6419!!";
-        "password";
+        public string senderAddress = "0x2d093225389fbd83a32150b46efd35665aeea7d3";
+        //"0x12890d2cce102216644c59dae5baed380d84830c";
+        public string password = "Pulsar6419!!";
+        //"password";
         static void Main(string[] args)
         {
             Program p = new Program();
@@ -34,7 +34,7 @@ namespace DeployTrackingContract
 
             var receipt = await MineAndGetReceiptAsync(web3, trackingtransactionHash);
             string trackingaddress = receipt.ContractAddress;
-            Console.WriteLine("trackingaddress  = {0}", trackingaddress);
+            Console.WriteLine("public const string trackingaddress  = \"{0}\";", trackingaddress);
 
 
 
@@ -44,7 +44,7 @@ namespace DeployTrackingContract
 
             receipt = await MineAndGetReceiptAsync(web3, shipmenttransactionHash);
             string shipmentaddress = receipt.ContractAddress;
-            Console.WriteLine("shipmentaddress  = {0}", shipmentaddress);
+            Console.WriteLine("public const string shipmentaddress  = \"{0}\";", shipmentaddress);
 
 
             string approvalsabi = @"[{""constant"":false,""inputs"":[{""name"":""containerId"",""type"":""address""},{""name"":""doc"",""type"":""string""},{""name"":""status"",""type"":""int256""},{""name"":""date"",""type"":""string""},{""name"":""docurl"",""type"":""string""},{""name"":""docid"",""type"":""int256""}],""name"":""UpdateApprovalStatus"",""outputs"":[],""type"":""function""},{""inputs"":[],""type"":""constructor""},{""anonymous"":false,""inputs"":[{""indexed"":false,""name"":""containerId"",""type"":""address""},{""indexed"":false,""name"":""doc"",""type"":""string""},{""indexed"":false,""name"":""status"",""type"":""int256""},{""indexed"":false,""name"":""date"",""type"":""string""},{""indexed"":false,""name"":""docurl"",""type"":""string""},{""indexed"":false,""name"":""docid"",""type"":""int256""}],""name"":""docstatus"",""type"":""event""}]";
@@ -53,7 +53,7 @@ namespace DeployTrackingContract
 
             receipt = await MineAndGetReceiptAsync(web3, approvalstransactionHash);
             string approvalsaddress = receipt.ContractAddress;
-            Console.WriteLine("approvalsaddress  = {0}", approvalsaddress);
+            Console.WriteLine("public const string approvalsaddress  = \"{0}\";", approvalsaddress);
 
 
             string weighingabi = @"[{""constant"":false,""inputs"":[{""name"":""containerId"",""type"":""address""},{""name"":""weight"",""type"":""int256""},{""name"":""date"",""type"":""string""},{""name"":""shipmentaddress"",""type"":""address""},{""name"":""trackingaddress"",""type"":""address""},{""name"":""name"",""type"":""string""},{""name"":""source"",""type"":""string""},{""name"":""destination"",""type"":""string""}],""name"":""VerifyWeight"",""outputs"":[],""type"":""function""},{""inputs"":[],""type"":""constructor""}]";
@@ -62,7 +62,7 @@ namespace DeployTrackingContract
 
             receipt = await MineAndGetReceiptAsync(web3, weighingtransactionHash);
             string weighingaddress = receipt.ContractAddress;
-            Console.WriteLine("weighingaddress  = {0}", weighingaddress);
+            Console.WriteLine("public const string weighingaddress  = \"{0}\";", weighingaddress);
 
 
             string paymentabi = @"[{""constant"":false,""inputs"":[],""name"":""MapSupplierIds"",""outputs"":[],""type"":""function""},{""constant"":false,""inputs"":[{""name"":""qty"",""type"":""int256""},{""name"":""supplierName"",""type"":""string""},{""name"":""containerId"",""type"":""address""},{""name"":""units"",""type"":""int256""},{""name"":""containerName"",""type"":""string""},{""name"":""time"",""type"":""string""}],""name"":""CalculatePayments"",""outputs"":[],""type"":""function""},{""constant"":false,""inputs"":[{""name"":""supplierName"",""type"":""string""}],""name"":""MapSupplierBanks"",""outputs"":[],""type"":""function""},{""constant"":true,""inputs"":[{""name"":"""",""type"":""address""}],""name"":""Bank"",""outputs"":[{""name"":"""",""type"":""string""}],""type"":""function""},{""inputs"":[],""type"":""constructor""},{""anonymous"":false,""inputs"":[{""indexed"":false,""name"":""qty"",""type"":""int256""},{""indexed"":false,""name"":""supplierName"",""type"":""string""},{""indexed"":false,""name"":""containerId"",""type"":""address""},{""indexed"":false,""name"":""bank"",""type"":""string""},{""indexed"":false,""name"":""units"",""type"":""int256""},{""indexed"":false,""name"":""containerName"",""type"":""string""},{""indexed"":false,""name"":""time"",""type"":""string""}],""name"":""Pay"",""type"":""event""}]";
@@ -71,7 +71,7 @@ namespace DeployTrackingContract
 
             receipt = await MineAndGetReceiptAsync(web3, paymenttransactioHash);
             string paymentaddress = receipt.ContractAddress;
-            Console.WriteLine("paymentaddress  = {0}",paymentaddress);
+            Console.WriteLine("public const string paymentaddress  = \"{0}\";", paymentaddress);
            
 
             Console.WriteLine("Contract Deployed Successfully...");

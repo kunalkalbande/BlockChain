@@ -11,7 +11,7 @@ namespace WPFTrackingBC
 {
     public class APICall
     {
-        const string API = "http://localhost:63887/api/v1/tracking/";
+        const string API = "http://idtp376/TrackingAPI/api/v1/tracking/";
         public static async Task<bool> AddShipmentDetail(string containerId, ShipmentDetailForPayment request)
         {
             bool result=false;
@@ -120,9 +120,9 @@ namespace WPFTrackingBC
             return result;
 
         }
-
         public static async Task<List<ShipmentDetails>> TrackShipmentsStatus()
         {
+
             List<ShipmentDetails> shipmentDetails = new List<ShipmentDetails>();
             string url = String.Format(API + "/trackShipments");
             System.Net.HttpWebRequest requestForJason = (HttpWebRequest)WebRequest.Create(url);
@@ -133,7 +133,7 @@ namespace WPFTrackingBC
             Encoding encoding = new UTF8Encoding();
             string resultResponce = "";
 
-            HttpWebResponse responseLocationMapping = await requestForJason.GetResponseAsync() as HttpWebResponse;
+            HttpWebResponse responseLocationMapping =  await requestForJason.GetResponseAsync() as HttpWebResponse;
             if (responseLocationMapping != null)
             {
                

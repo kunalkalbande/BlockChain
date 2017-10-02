@@ -147,12 +147,12 @@
 
                                 </Grid>
                             </Border>
-                            <ProgressBar IsIndeterminate="True" x:Name="prg" Height="10" VerticalAlignment="Center" Grid.Row="1" Foreground="#69C6F1" Visibility="Collapsed"/>
                             <Grid Grid.Row="2">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="10"/>
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
+                                <ProgressBar IsIndeterminate="True" x:Name="prg" Height="10" VerticalAlignment="Center"  Foreground="#69C6F1" Visibility="Collapsed"/>
                                 <DataGrid Grid.Row="1" x:Name="transactionGrid"  CanUserAddRows="False" CanUserDeleteRows="False" 
                                   VerticalContentAlignment="Center"  HorizontalContentAlignment="Center" RowHeight="30" ItemsSource="{Binding PaymentDetails}"
                                   RowBackground="#D4FFFF" CanUserReorderColumns="False" AutoGenerateColumns="False" Foreground="#FF747374" 
@@ -307,12 +307,14 @@
 
                                 </Grid>
                             </Border>
-                            <ProgressBar IsIndeterminate="True" x:Name="prg1" Height="10" VerticalAlignment="Center" Grid.Row="1" Foreground="#69C6F1" Visibility="Collapsed"/>
+                            <!--<ProgressBar IsIndeterminate="True" x:Name="prg1" Height="20" VerticalAlignment="Center" Grid.Row="1" Foreground="#69C6F1" Visibility="Visible"/>-->
                             <Grid Grid.Row="2">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="10"/>
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
+                                <ProgressBar IsIndeterminate="True" x:Name="prg1" Height="10" VerticalAlignment="Center" Foreground="#69C6F1" Visibility="Collapsed"/>
+
                                 <DataGrid Grid.Row="1" x:Name="transactionGrid1"  CanUserAddRows="False" CanUserDeleteRows="False"
                                   VerticalContentAlignment="Center"  HorizontalContentAlignment="Center" RowHeight="30" ItemsSource="{Binding ContainerList,UpdateSourceTrigger=PropertyChanged}"
                                   RowBackground="#D4FFFF" CanUserReorderColumns="False" AutoGenerateColumns="False" Foreground="#FF747374" 

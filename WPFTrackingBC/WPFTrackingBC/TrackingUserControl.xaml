@@ -190,22 +190,36 @@
                                 <TextBlock Text="Packaging List" Background="Black" Foreground="White" Height="16" Margin="5 0"/>
                             </StackPanel>
                         </Border>
-                        <ListView x:Name="listDoc" ItemsSource="{Binding Approvalsdetail,UpdateSourceTrigger=PropertyChanged}" Visibility="Visible" Background="Transparent" Grid.Row="1" BorderBrush="Transparent" SelectionChanged="listDoc_SelectionChanged">
-                            <ListView.ItemContainerStyle>
-                                <Style TargetType="ListViewItem">
-                                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                                </Style>
-                            </ListView.ItemContainerStyle>
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal"  VerticalAlignment="Center" Background="#747374">
-                                        <Image Source="Assets/document-16.png"  Height="16" Margin="0 3"/>
-                                        <TextBlock Text="{Binding Document}"  Foreground="White" Height="16" Margin="5 0 0 0"/>
-                                        <Image Height="12" Source="{Binding _status,Mode=TwoWay,Converter={StaticResource StatusToImageConverter}}" Margin="5 0"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
+                        <StackPanel Grid.Row="1">
+                            <ProgressBar IsIndeterminate="True" Height="5" Foreground="#69C6F1">
+                                <ProgressBar.Style>
+                                    <Style TargetType="ProgressBar" >
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=txtdocname,Path=Text}" Value="Document1.pdf">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ProgressBar.Style>
+                            </ProgressBar>
+                            <ListView x:Name="listDoc" ItemsSource="{Binding Approvalsdetail,UpdateSourceTrigger=PropertyChanged}" Visibility="Visible" Background="Transparent" Grid.Row="1" BorderBrush="Transparent" SelectionChanged="listDoc_SelectionChanged">
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal"  VerticalAlignment="Center" Background="#747374">
+                                            <Image Source="Assets/document-16.png"  Height="16" Margin="0 3"/>
+                                            <TextBlock Text="{Binding Document}"  Foreground="White" Height="16" Margin="5 0 0 0"/>
+                                            <Image Height="12" Source="{Binding _status,Mode=TwoWay,Converter={StaticResource StatusToImageConverter}}" Margin="5 0"/>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackPanel>
                     </Grid>
                     <Grid Margin="20 10 20 20" Background="#747374" Grid.Row="2">
                         <Grid.RowDefinitions>

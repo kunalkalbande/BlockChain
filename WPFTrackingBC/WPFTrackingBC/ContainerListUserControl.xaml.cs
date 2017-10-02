@@ -37,6 +37,8 @@ namespace WPFTrackingBC
 
         private async void ContainerListUserControl_Loaded(object sender, RoutedEventArgs e)
         {
+
+            
             if (App.UserType == UserType.Initiater)
             {
                 btnadd.Visibility = Visibility.Visible;
@@ -48,14 +50,24 @@ namespace WPFTrackingBC
             {
                 vm.ContainerList = new ObservableCollection<ShipmentDetails>();
             }
-      
+            prg.Visibility = Visibility.Visible;
         
-            TrackShipmentStatus();
+            await TrackShipmentStatus();
+            prg.Visibility = Visibility.Collapsed;
             this.DataContext = vm;
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 10);
             dispatcherTimer.Start();
         }
+
+        //private void TrackShipmentStatus1()
+        //{
+        //    lock (o)
+        //    {
+        //        TrackShipmentStatus();
+        //    }
+
+        //}
 
         private void TriggerNotification()
         {
@@ -81,10 +93,11 @@ namespace WPFTrackingBC
 
             }
         }
-
-        private void dispatcherTimer_Tick(object sender, EventArgs e)
+        object o = new object();
+        private  void dispatcherTimer_Tick(object sender, EventArgs e)
         {
-            TrackShipmentStatus();
+          
+               TrackShipmentStatus();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
@@ -110,10 +123,10 @@ namespace WPFTrackingBC
 
         private async Task<bool> InitateShipment()
         {
-            string url1 = "https://blockchaindocs.file.core.windows.net/blockchaindocs/ASF.pdf?sv=2017-04-17&ss=bfqt&srt=sco&sp=rwdlacup&se=2017-09-22T23:16:13Z&st=2017-09-19T15:16:13Z&sip=103.19.39.2&spr=https&sig=tGXTpR1xXnasFD3kE7MQrqU0wnnU04TJ6raG%2FzSwdp8%3D";
-            string url2 = "https://blockchaindocs.file.core.windows.net/blockchaindocs/Ethereum Consortium Blockchain in Azure Marketplace.pdf?sv=2017-04-17&ss=bfqt&srt=sco&sp=rwdlacup&se=2017-09-22T23:16:13Z&st=2017-09-19T15:16:13Z&sip=103.19.39.2&spr=https&sig=tGXTpR1xXnasFD3kE7MQrqU0wnnU04TJ6raG%2FzSwdp8%3D";
-            string url3 = "https://blockchaindocs.file.core.windows.net/blockchaindocs/Ethereum Multi-Member Consortium Network.pdf?sv=2017-04-17&ss=bfqt&srt=sco&sp=rwdlacup&se=2017-09-22T23:16:13Z&st=2017-09-19T15:16:13Z&sip=103.19.39.2&spr=https&sig=tGXTpR1xXnasFD3kE7MQrqU0wnnU04TJ6raG%2FzSwdp8%3D";
-            string url4 = "https://blockchaindocs.file.core.windows.net/blockchaindocs/GST_B2B_INVOICE_CASES-CF.pdf?sv=2017-04-17&ss=bfqt&srt=sco&sp=rwdlacup&se=2017-09-22T23:16:13Z&st=2017-09-19T15:16:13Z&sip=103.19.39.2&spr=https&sig=tGXTpR1xXnasFD3kE7MQrqU0wnnU04TJ6raG%2FzSwdp8%3D";
+            string url1 = "https://blockchaindocs.file.core.windows.net/blockchaindocs/ASF.pdf?sv=2017-04-17&ss=bfqt&srt=sco&sp=rwdlacup&se=2017-10-02T01:52:18Z&st=2017-09-27T17:52:18Z&sip=103.19.39.0-103.19.39.24&spr=https,http&sig=U2r1c3jgCkzV15dfV4LYJAKW4yH238eQAKCfmR1VWM4%3D";
+            string url2 = "https://blockchaindocs.file.core.windows.net/blockchaindocs/Ethereum Consortium Blockchain in Azure Marketplace.pdf?sv=2017-04-17&ss=bfqt&srt=sco&sp=rwdlacup&se=2017-10-02T01:52:18Z&st=2017-09-27T17:52:18Z&sip=103.19.39.0-103.19.39.24&spr=https,http&sig=U2r1c3jgCkzV15dfV4LYJAKW4yH238eQAKCfmR1VWM4%3D";
+            string url3 = "https://blockchaindocs.file.core.windows.net/blockchaindocs/Ethereum Multi-Member Consortium Network.pdf?sv=2017-04-17&ss=bfqt&srt=sco&sp=rwdlacup&se=2017-10-02T01:52:18Z&st=2017-09-27T17:52:18Z&sip=103.19.39.0-103.19.39.24&spr=https,http&sig=U2r1c3jgCkzV15dfV4LYJAKW4yH238eQAKCfmR1VWM4%3D";
+            string url4 = "https://blockchaindocs.file.core.windows.net/blockchaindocs/GST_B2B_INVOICE_CASES-CF.pdf?sv=2017-04-17&ss=bfqt&srt=sco&sp=rwdlacup&se=2017-10-02T01:52:18Z&st=2017-09-27T17:52:18Z&sip=103.19.39.0-103.19.39.24&spr=https,http&sig=U2r1c3jgCkzV15dfV4LYJAKW4yH238eQAKCfmR1VWM4%3D";
 
             ShipmentDetailForPayment shipmentDetailrequest = new ShipmentDetailForPayment()
             {
@@ -230,7 +243,7 @@ namespace WPFTrackingBC
                 TriggerNotification();
                 return true;
             }
-            catch
+            catch(Exception ex)
             {
                 return false;
             }
@@ -257,7 +270,7 @@ namespace WPFTrackingBC
 
         private void btnNotification_Click(object sender, RoutedEventArgs e)
         {
-            if(vm.NotificationList.Count()>0)
+            if(vm.NotificationList!=null && vm.NotificationList.Count()>0)
             popupContainer.IsOpen = true;
         }
 
@@ -272,11 +285,13 @@ namespace WPFTrackingBC
                 if (!string.IsNullOrEmpty(tracking.Container.Id))
                 {
                     App.mainWindow.AddChild(tracking);
+                    dispatcherTimer.Stop();
                 }
                 else
                 {
                     listContainer.SelectedIndex = -1;
                 }
+                
             }
         }
     }
