@@ -12,6 +12,7 @@
         <converter:StatusToboolConverter x:Key="StatusToboolConverter"/>
     </UserControl.Resources>
     <Grid Background="#0492C9">
+        <Image Margin="10" Source="Assets/logo.png" HorizontalAlignment="Left" VerticalAlignment="Top" MaxHeight="50"></Image>
         <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Center" VerticalAlignment="Center" Width="500" Height="650">
             <Grid Width="500" Height="650" >
                 <Grid.Background>

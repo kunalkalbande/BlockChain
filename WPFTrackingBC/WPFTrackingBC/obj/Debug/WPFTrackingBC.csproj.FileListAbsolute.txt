@@ -92,3 +92,5 @@ E:\BlockChain\BlockChain\WPFTrackingBC\WPFTrackingBC\obj\Debug\TrackingUserContr
 E:\BlockChain\BlockChain\WPFTrackingBC\WPFTrackingBC\obj\Debug\WPFTrackingBC.g.resources
 E:\BlockChain\BlockChain\WPFTrackingBC\WPFTrackingBC\obj\Debug\WPFTrackingBC.Properties.Resources.resources
 E:\BlockChain\BlockChain\WPFTrackingBC\WPFTrackingBC\obj\Debug\WPFTrackingBC.csproj.GenerateResource.Cache
+E:\BlockChain\BlockChain\WPFTrackingBC\WPFTrackingBC\bin\Debug\Microsoft.IdentityModel.Clients.ActiveDirectory.dll
+E:\BlockChain\BlockChain\WPFTrackingBC\WPFTrackingBC\bin\Debug\Microsoft.IdentityModel.Clients.ActiveDirectory.xml

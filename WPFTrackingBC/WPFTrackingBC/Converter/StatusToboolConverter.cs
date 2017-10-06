@@ -22,7 +22,7 @@ namespace WPFTrackingBC.Converter
                         case Status.Initiated:return true;
                         default: return false;
                     }
-                case UserType.Weighing:
+                case UserType.VGM:
                     switch (status)
                     {
                         case Status.CustomApproved: return true;

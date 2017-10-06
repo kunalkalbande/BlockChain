@@ -11,12 +11,12 @@ namespace DeployTrackingContract
     class Program
     {
         static Nethereum.JsonRpc.Client.IClient client = new Nethereum.JsonRpc.Client.RpcClient(new Uri("http://synbckaam.southcentralus.cloudapp.azure.com:8545"));
-        public Nethereum.Web3.Web3 web3 = new Nethereum.Web3.Web3(client);
+        public Nethereum.Web3.Web3 web3 = new Nethereum.Web3.Web3();
         Nethereum.Web3.Contract paymentContract;
-        public string senderAddress = "0x2d093225389fbd83a32150b46efd35665aeea7d3";
-        //"0x12890d2cce102216644c59dae5baed380d84830c";
-        public string password = "Pulsar6419!!";
-        //"password";
+        public string senderAddress = //"0x2d093225389fbd83a32150b46efd35665aeea7d3";
+        "0x12890d2cce102216644c59dae5baed380d84830c";
+        public string password = //"Pulsar6419!!";
+        "password";
         static void Main(string[] args)
         {
             Program p = new Program();

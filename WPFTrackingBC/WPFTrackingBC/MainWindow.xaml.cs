@@ -1,9 +1,15 @@
-﻿using Nethereum.RPC.Eth.DTOs;
+﻿using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Nethereum.RPC.Eth.DTOs;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.DirectoryServices.AccountManagement;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -42,6 +48,23 @@ namespace WPFTrackingBC
         public Nethereum.Web3.Contract approvalsContract;
         public Nethereum.Web3.Contract weighingContract;
         public Nethereum.RPC.Eth.Filters.NewFilterInput filterInput;
+
+        private static string aadInstance = ConfigurationManager.AppSettings["ida:AADInstance"];
+        private static string tenant = ConfigurationManager.AppSettings["ida:Tenant"];
+        private static string clientId = ConfigurationManager.AppSettings["ida:ClientId"];
+        Uri redirectUri = new Uri(ConfigurationManager.AppSettings["ida:RedirectUri"]);
+
+        private static string authority = String.Format(CultureInfo.InvariantCulture, aadInstance, tenant);
+
+        //
+        // To authenticate to the To Do list service, the client needs to know the service's App ID URI.
+        // To contact the To Do list service we need it's URL as well.
+        //
+        private static string todoListResourceId = ConfigurationManager.AppSettings["todo:TodoListResourceId"];
+        private static string todoListBaseAddress = ConfigurationManager.AppSettings["todo:TodoListBaseAddress"];
+
+        private HttpClient httpClient = new HttpClient();
+        private AuthenticationContext authContext = null;
         public MainWindow()
         {
             InitializeComponent();
@@ -53,8 +76,86 @@ namespace WPFTrackingBC
         private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             App.mainWindow = this;
-           // await DeployContracts();
-            gridUsercontrol.Children.Add(new LoginUsercontrol());
+            await AuthenticateUser();
+            // await DeployContracts();
+            //  gridUsercontrol.Children.Add(new LoginUsercontrol());
+        }
+
+        private async Task AuthenticateUser()
+        {
+            authContext = new AuthenticationContext(authority);
+
+            AuthenticationResult result = null;
+            try
+            {
+                result = await authContext.AcquireTokenAsync(todoListResourceId, clientId, redirectUri, new PlatformParameters(PromptBehavior.Auto));
+            }
+            catch (AdalException ex)
+            {
+               
+                    // An unexpected error occurred.
+                    string message = ex.Message;
+                    if (ex.InnerException != null)
+                    {
+                        message += "Error Code: " + ex.ErrorCode + "Inner Exception : " + ex.InnerException.Message;
+                    }
+                    MessageBox.Show(message);
+             
+
+                return;
+            }
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", result.AccessToken);
+            var user = result.UserInfo;
+            var uri = "https://graph.windows.net/" + tenant + "/users/" + user.UniqueId + "/getMemberGroups?api-version=1.6";
+
+            var myContent = "{\"securityEnabledOnly\": false}";
+            var buffer = System.Text.Encoding.UTF8.GetBytes(myContent);
+            var byteContent = new ByteArrayContent(buffer);
+            byteContent.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            HttpResponseMessage response = await httpClient.PostAsync(uri, byteContent);
+
+            if (response.IsSuccessStatusCode)
+            {
+
+                // Read the response and databind to the GridView to display To Do items.
+                string s = await response.Content.ReadAsStringAsync();
+
+                var group = JsonConvert.DeserializeObject<RootObject>(s);
+
+                uri = "https://graph.windows.net/" + tenant + "/groups/" + group.value.FirstOrDefault() + "/?api-version=1.6";
+
+
+                response = await httpClient.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+
+                    // Read the response and databind to the GridView to display To Do items.
+                    s = await response.Content.ReadAsStringAsync();
+                     group = JsonConvert.DeserializeObject<RootObject>(s);
+                    if(!string.IsNullOrEmpty(group.displayName))
+                    {
+                        var list = group.displayName.Split(':');
+                        if (list.Count() == 1)
+                        {
+                            App.UserName = user.GivenName;
+                            App.UserType = (UserType)Enum.Parse(typeof(UserType), (group.displayName));
+                            App.mainWindow.AddChild(new ContainerListUserControl());
+                        }
+                        else
+                        {
+                            App.UserName = list[1];
+                            App.UserType = (UserType)Enum.Parse(typeof(UserType), (list[0]));
+                            App.mainWindow.AddChild(new SupplierUserControl());
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("An error occurred : " + response.ReasonPhrase);
+            }
+
+            return;
         }
 
         private async Task<bool> DeployContracts()
@@ -135,5 +236,11 @@ namespace WPFTrackingBC
             gridUsercontrol.Children.Add(userControl);
         }
         
+    }
+    public class RootObject
+    {
+      
+        public List<string> value { get; set; }
+        public string displayName { get; set; }
     }
 }

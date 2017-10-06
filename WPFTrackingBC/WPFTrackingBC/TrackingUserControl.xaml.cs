@@ -64,8 +64,9 @@ namespace WPFTrackingBC
                 stkAppprover.Visibility = Visibility.Collapsed;
                 stkExporter.Visibility = Visibility.Collapsed;
             }
-            else if (App.UserType == UserType.Weighing)
+            else if (App.UserType == UserType.VGM)
             {
+                btnExport.Visibility=Visibility.Collapsed;
                 stkAppprover.Visibility = Visibility.Collapsed;
                 stkWeight.Visibility = Visibility.Visible;
                 stkExporter.Visibility = Visibility.Collapsed;
@@ -80,7 +81,7 @@ namespace WPFTrackingBC
             {
                 stkWeight.Visibility = Visibility.Collapsed;
                 stkExporter.Visibility = Visibility.Collapsed;
-                stkAppprover.Visibility = Visibility.Visible;
+                stkAppprover.Visibility = Visibility.Collapsed;
             }
             //vm.Approvalsdetail.Add(new ApprovalsDetails() { Document = "Document 1", _status = 0, Url = "http://idtp376/Pdf/Ethereum%20Consortium%20Blockchain%20in%20Azure%20Marketplace.pdf" });
             //vm.Approvalsdetail.Add(new ApprovalsDetails() { Document = "Document 2", _status = 0, Url = "http://idtp376/Pdf/Ethereum%20Multi-Member%20Consortium%20Network.pdf" });
@@ -103,8 +104,7 @@ namespace WPFTrackingBC
             dispatcherTimer.Tick += new EventHandler(dispatcherTimer_Tick);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 10);
             dispatcherTimer.Start();
-            
-            
+
         }
 
         private async void SetSupplierAndBank()
@@ -126,7 +126,7 @@ namespace WPFTrackingBC
                     vm.Approvalsdetail.Add(new ApprovalsDetails() {DocId=1, Document = "Excise Form", _status = 0, Url = "http://idtp376/Pdf/Ethereum%20Consortium%20Blockchain%20in%20Azure%20Marketplace.pdf" });
                     vm.Approvalsdetail.Add(new ApprovalsDetails() {DocId=2, Document = "Packaging List", _status = 0, Url = "http://idtp376/Pdf/Ethereum%20Multi-Member%20Consortium%20Network.pdf" });
                     break;
-                case UserType.Weighing:
+                case UserType.VGM:
                     vm.Approvalsdetail.Add(new ApprovalsDetails() { DocId = 3, Document = "VGM", _status = 0, Url = "http://idtp376/Pdf/ASF-VGM-Declaration-Form.pdf" });
                     break;
                 case UserType.Custom:
@@ -191,17 +191,20 @@ namespace WPFTrackingBC
                     brDestination.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#074A63"));
                     break;
                 case Status.CustomApproved:
+                    if (App.UserType == UserType.Custom)
+                        stkAppprover.Visibility = Visibility.Visible;
+                    btnSave.IsEnabled = false;
+                    btnClose.IsEnabled = false;
                     btnExport.IsEnabled = true;
-                    btnReject.IsEnabled = true;
+                    //btnReject.IsEnabled = true;
                     border1.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1CB21"));
                     border2.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1CB21"));
                     border3.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1CB21"));
-                    border4.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1CB21"));
                     brsource.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1CB21"));
                     brApproval.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1CB21"));
                     brWeighing.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1CB21"));
-                    brExcies.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1CB21"));
-                    brDestination.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFD42A"));
+                    brExcies.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFD42A"));
+                    brDestination.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#074A63"));
                     break;
                 case Status.Rejected:
                     border1.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1CB21"));
@@ -264,6 +267,17 @@ namespace WPFTrackingBC
                     brSupplier.Background = new SolidColorBrush(Colors.LightGray);
                     break;
                 case Status.GatedIn:
+                    border1.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1CB21"));
+                    border2.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1CB21"));
+                    border3.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1CB21"));
+                    border4.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1CB21"));
+                    brsource.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1CB21"));
+                    brApproval.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1CB21"));
+                    brWeighing.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1CB21"));
+                    brExcies.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1CB21"));
+                    brDestination.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFD42A"));
+                    break;
+                case Status.Shipped:
                     border1.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1CB21"));
                     border2.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1CB21"));
                     border3.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1CB21"));
@@ -361,31 +375,36 @@ namespace WPFTrackingBC
                 listDoc.DataContext = vm;
                 listDoc.ItemsSource = vm.Approvalsdetail;
                     var detail =await APICall.TrackApproval(Container.Id);
-                    switch (App.UserType)
-                    {
-                        case UserType.Excise:
-                            if (vm.Approvalsdetail.Count() < 2)
-                            {
-                                vm.Approvalsdetail = new ObservableCollection<ApprovalsDetails>(detail.Where(x => x.DocId == 1 || x.DocId == 2).ToList());
-                            }
-                            break;
-                        case UserType.Weighing:
-                            if (vm.Approvalsdetail.Count() == 0)
-                                vm.Approvalsdetail = new ObservableCollection<ApprovalsDetails>(detail.Where(x => x.DocId == 3).ToList());
-                            break;
-                        case UserType.Custom:
-                            if (vm.Approvalsdetail.Count() == 0)
-                                vm.Approvalsdetail = new ObservableCollection<ApprovalsDetails>(detail.Where(x => x.DocId == 4).ToList());
-                            break;
-                        default:
-                            if (vm.Approvalsdetail.Count() < 4)
-                            {
-                                vm.Approvalsdetail = new ObservableCollection<ApprovalsDetails>(detail.ToList());
-                            }
-                            break;
-                    }
-                    //Approvalsdetail.Clear();
-                    foreach (var s in detail)
+                switch (App.UserType)
+                {
+                    case UserType.Excise:
+                        btnExport.Visibility = Visibility.Collapsed;
+                        if (vm.Approvalsdetail.Count() < 2)
+                        {
+
+                            vm.Approvalsdetail = new ObservableCollection<ApprovalsDetails>(detail.Where(x => x.DocId == 1 || x.DocId == 2).ToList());
+                        }
+                        break;
+                    case UserType.VGM:
+                        btnExport.Visibility = Visibility.Collapsed;
+                        if (vm.Approvalsdetail.Count() == 0)
+                            vm.Approvalsdetail = new ObservableCollection<ApprovalsDetails>(detail.Where(x => x.DocId == 3).ToList());
+                        break;
+                    case UserType.Custom:
+                        btnExport.Visibility = Visibility.Visible;
+                        if (vm.Approvalsdetail.Count() == 0)
+                            vm.Approvalsdetail = new ObservableCollection<ApprovalsDetails>(detail.Where(x => x.DocId == 4).ToList());
+                        break;
+                    default:
+                        btnExport.Visibility = Visibility.Collapsed;
+                        if (vm.Approvalsdetail.Count() < 4)
+                        {
+                            vm.Approvalsdetail = new ObservableCollection<ApprovalsDetails>(detail.ToList());
+                        }
+                        break;
+                }
+                //Approvalsdetail.Clear();
+                foreach (var s in detail)
                     {
                         if (vm.Approvalsdetail.Where(x => x.Document == s.Document).Count() > 0)
                             vm.Approvalsdetail.Where(x => x.Document == s.Document).First()._status = s._status;
@@ -411,7 +430,7 @@ namespace WPFTrackingBC
                     };
                     await APICall.AddShipmentStatus(shipmentRequest.Id, shipmentRequest);
                 }
-                if (detail.Where(c => c.Status == ApprovalStatus.Approved).Count() == 3 && Container.Status == Status.ExciseApproved && App.UserType == UserType.Weighing && !weighingApproved)
+                if (detail.Where(c => c.Status == ApprovalStatus.Approved).Count() == 3 && Container.Status == Status.ExciseApproved && App.UserType == UserType.VGM && !weighingApproved)
                 {
                     prg.Visibility = Visibility.Visible;
                     weighingApproved = true;
@@ -583,9 +602,10 @@ namespace WPFTrackingBC
         private void btnExport_Click(object sender, RoutedEventArgs e)
         {
             prg.Visibility = Visibility.Visible;
+            stkExporter.Visibility = Visibility.Collapsed;
             btnExport.IsEnabled = false;
             btnReject.IsEnabled = false;
-            CalculatePayment();
+            //CalculatePayment();
             string desc = String.Format("Container {0} is Approved by {1} and gated in successfully", Container.ContainerName, txtUserName.Text, txtReason.Text);
             UpdateShipmentStatus(desc, (int)Status.GatedIn);
         }
@@ -642,6 +662,17 @@ namespace WPFTrackingBC
                 Container._status = (int)Status.WeighingRejected;
                 SendForApprovals(2, (int)Status.WeighingRejected);
             }
+        }
+
+        private void btnPay_Click(object sender, RoutedEventArgs e)
+        {
+            prg.Visibility = Visibility.Visible;
+            stkExporter.Visibility = Visibility.Collapsed;
+            btnExport.IsEnabled = false;
+            btnReject.IsEnabled = false;
+            CalculatePayment();
+            string desc = String.Format("Container {0} is Approved by {1} and gated in successfully", Container.ContainerName, txtUserName.Text, txtReason.Text);
+            UpdateShipmentStatus(desc, (int)Status.GatedIn);
         }
     }
 }

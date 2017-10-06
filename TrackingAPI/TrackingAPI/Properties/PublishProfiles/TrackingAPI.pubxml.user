@@ -202,7 +202,7 @@ by editing this MSBuild file. In order to learn more about this please visit htt
       <publishTime>09/21/2017 18:10:46</publishTime>
     </File>
     <File Include="bin/TrackingAPI.dll">
-      <publishTime>10/02/2017 12:23:23</publishTime>
+      <publishTime>10/06/2017 12:56:26</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>09/21/2017 18:10:47</publishTime>

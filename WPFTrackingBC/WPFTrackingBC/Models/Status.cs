@@ -21,12 +21,14 @@ namespace WPFTrackingBC.Models
         Rejected=8,
         Initializing=9,
         PaymentApproved=10,
-        PendingSupplierApproval=11
+        PendingSupplierApproval=11,
+        PortCustomApproved=12,
+        Shipped=13
     }
 
     public enum UserType
     {
-        Initiater=0,Custom=3,Weighing=2,Excise=1,ExportAuthority=4
+        Initiater=0,Custom=3,VGM=2,Excise=1,ExportAuthority=4,Supplier=5
     }
 
     

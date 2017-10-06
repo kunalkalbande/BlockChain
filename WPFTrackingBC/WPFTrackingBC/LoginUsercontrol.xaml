@@ -43,7 +43,7 @@
                         <ComboBox x:Name="cmbUserType" Margin="15" Grid.Column="1">
                             <ComboBoxItem>Initiater</ComboBoxItem>
                             <ComboBoxItem>Excise</ComboBoxItem>
-                            <ComboBoxItem>Weighing</ComboBoxItem>
+                            <ComboBoxItem>VGM</ComboBoxItem>
                             <ComboBoxItem>Custom</ComboBoxItem>
                             <ComboBoxItem>ExportAuthority</ComboBoxItem>
                             <ComboBoxItem>Supplier</ComboBoxItem>

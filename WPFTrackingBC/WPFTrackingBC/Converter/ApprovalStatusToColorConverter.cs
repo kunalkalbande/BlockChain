@@ -72,6 +72,7 @@ namespace WPFTrackingBC.Converter
                         case Status.WeighingApproved:
                         case Status.WeighingRejected:
                         case Status.ExciseRejected:
+                        case Status.CustomApproved:
                             return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#074A63"));
                         case Status.CustomRejected: return new SolidColorBrush(Colors.Red);
                         default: return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#69C6F1"));
@@ -86,6 +87,7 @@ namespace WPFTrackingBC.Converter
                         case Status.WeighingApproved:
                         case Status.WeighingRejected:
                         case Status.ExciseRejected:
+                        case Status.CustomApproved:
                             return new SolidColorBrush(Colors.Black);
                         case Status.CustomRejected: return new SolidColorBrush(Colors.Red);
                         default: return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#B1CB21"));

@@ -58,12 +58,13 @@ namespace WPFTrackingBC
         private async Task<bool> GetTransactionDetails()
         {
            
-               var details = new ObservableCollection<PaymentDetails>( await APICall.GetPaymentDetails(App.UserName));
+               var details = new ObservableCollection<PaymentDetails>( (await APICall.GetPaymentDetails(App.UserName)).GroupBy(d => d.ContainerId).Select(c => c.First()).ToList());
           
 
             //vm.PaymentDetails.ToList().AddRange((_paymentdetail).Where(x => !vm.PaymentDetails.Select(y => y.ContainerId).Contains(x.ContainerId)).Select(x => x).ToList());
             var supplierShipment = (await APICall.GetShipmentDetail(App.UserName)).Where(x=> !details.Select(y=>y.ContainerId).Contains(x.ContainerId)).Select(x=>x).ToList() ;
             vm.Balance = 0;
+            
             details.ToList().ForEach(x => { vm.Balance += x.Quantity; vm.Bank = x.Bank; if (x.Quantity > 0) x.Status = Status.GatedIn; });
             supplierShipment.ForEach(x => details.Add(new PaymentDetails() {ContainerId=x.ContainerId, ContainerName = x.ContainerName, Quantity = 0, Unit = x.Quantity }));
             await UpdateStatus(details.ToList());

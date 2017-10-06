@@ -78,7 +78,7 @@ namespace WPFTrackingBC
                     vm.NotificationList = new ObservableCollection<ShipmentDetails>(vm.ContainerList.Where(x => x.Status == Status.Initiated).ToList());
                     txtNotification.Text = vm.NotificationList.Count.ToString();
                     break;
-                case UserType.Weighing:
+                case UserType.VGM:
                     vm.NotificationList = new ObservableCollection<ShipmentDetails>(vm.ContainerList.Where(x => x.Status == Status.ExciseApproved).ToList());
                     txtNotification.Text = vm.NotificationList.Count.ToString();
                     break;
@@ -123,10 +123,10 @@ namespace WPFTrackingBC
 
         private async Task<bool> InitateShipment()
         {
-            string url1 = "https://blockchaindocs.file.core.windows.net/blockchaindocs/ASF.pdf?sv=2017-04-17&ss=bfqt&srt=sco&sp=rwdlacup&se=2017-10-02T01:52:18Z&st=2017-09-27T17:52:18Z&sip=103.19.39.0-103.19.39.24&spr=https,http&sig=U2r1c3jgCkzV15dfV4LYJAKW4yH238eQAKCfmR1VWM4%3D";
-            string url2 = "https://blockchaindocs.file.core.windows.net/blockchaindocs/Ethereum Consortium Blockchain in Azure Marketplace.pdf?sv=2017-04-17&ss=bfqt&srt=sco&sp=rwdlacup&se=2017-10-02T01:52:18Z&st=2017-09-27T17:52:18Z&sip=103.19.39.0-103.19.39.24&spr=https,http&sig=U2r1c3jgCkzV15dfV4LYJAKW4yH238eQAKCfmR1VWM4%3D";
-            string url3 = "https://blockchaindocs.file.core.windows.net/blockchaindocs/Ethereum Multi-Member Consortium Network.pdf?sv=2017-04-17&ss=bfqt&srt=sco&sp=rwdlacup&se=2017-10-02T01:52:18Z&st=2017-09-27T17:52:18Z&sip=103.19.39.0-103.19.39.24&spr=https,http&sig=U2r1c3jgCkzV15dfV4LYJAKW4yH238eQAKCfmR1VWM4%3D";
-            string url4 = "https://blockchaindocs.file.core.windows.net/blockchaindocs/GST_B2B_INVOICE_CASES-CF.pdf?sv=2017-04-17&ss=bfqt&srt=sco&sp=rwdlacup&se=2017-10-02T01:52:18Z&st=2017-09-27T17:52:18Z&sip=103.19.39.0-103.19.39.24&spr=https,http&sig=U2r1c3jgCkzV15dfV4LYJAKW4yH238eQAKCfmR1VWM4%3D";
+            string url1 = "http://idtp376/Pdf/GST_B2B_INVOICE_CASES-CF.pdf";
+            string url2 = "http://idtp376/Pdf/Ethereum%20Multi-Member%20Consortium%20Network.pdf";
+            string url3 = "http://idtp376/Pdf/ASF-VGM-Declaration-Form.pdf";
+            string url4 = "http://idtp376/Pdf/Ethereum%20Consortium%20Blockchain%20in%20Azure%20Marketplace.pdf";
 
             ShipmentDetailForPayment shipmentDetailrequest = new ShipmentDetailForPayment()
             {

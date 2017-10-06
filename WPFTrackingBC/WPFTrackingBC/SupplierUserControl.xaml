@@ -24,18 +24,23 @@
     </UserControl.Resources>
     <Grid Background="#FF0492C9">
         <Grid.RowDefinitions>
-            <RowDefinition Height="220"/>
+            <RowDefinition Height="80"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Border BorderBrush="#69C6F1" BorderThickness="0 0 0 1">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Border BorderBrush="#69C6F1" BorderThickness="0 0 0 1" Grid.ColumnSpan="2">
             <Grid Margin="10 0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
-                    <ColumnDefinition Width="120"/>
+                    <ColumnDefinition Width="80"/>
                 </Grid.ColumnDefinitions>
-                <StackPanel x:Name="stkSummary" VerticalAlignment="Center" HorizontalAlignment="Left">
+                <Image Margin="10" Source="Assets/logo.png" HorizontalAlignment="Left"/>
+                <StackPanel x:Name="stkSummary" VerticalAlignment="Center" HorizontalAlignment="Center" >
                     <TextBlock Text="Account Summary" Foreground="#FF69C6F1" FontWeight="Bold" FontSize="21.333" TextAlignment="Left" Margin="10"/>
-                    <StackPanel Orientation="Horizontal">
+                    <!--<StackPanel Orientation="Horizontal">
                         <Image   Height="150"  Margin="10 0 10 10" HorizontalAlignment="Left">
                             <Image.Style>
                                 <Style TargetType="Image">
@@ -71,7 +76,7 @@
                                 <TextBlock Text="{Binding Balance,UpdateSourceTrigger=PropertyChanged}" Foreground="#002B55"  FontSize="18.667" TextAlignment="Center" />
                             </StackPanel>
                         </StackPanel>
-                    </StackPanel>
+                    </StackPanel>-->
                 </StackPanel>
                 <!--<StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center"  >-->
                     <!--<TextBlock Grid.Column="1" Text="Transaction Tracking" FontSize="18" FontWeight="Bold" Foreground="#69C6F1" HorizontalAlignment="Center" VerticalAlignment="Center"   />-->
@@ -86,7 +91,44 @@
                 </Button>
             </Grid>
         </Border>
-        <TabControl Grid.Row="1" Margin="10"  Width="1050" Height="550">
+        <StackPanel Orientation="Vertical" Grid.Row="1" VerticalAlignment="Top"  Margin="0 100 0 0">
+            <!--<Image   Height="150"  Margin="10 0 10 10" HorizontalAlignment="Left">
+                <Image.Style>
+                    <Style TargetType="Image">
+                        <Setter Property="Source" Value="Assets/images.jpg"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Supplier,UpdateSourceTrigger=PropertyChanged}" Value="OTR">
+                                <Setter Property="Source" Value="Assets/Titan_OTR.jpg"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Supplier,UpdateSourceTrigger=PropertyChanged}" Value="BRIDGESTONE">
+                                <Setter Property="Source" Value="Assets/Bridgestone-tyre-500x500.jpg"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Supplier,UpdateSourceTrigger=PropertyChanged}" Value="SOLID TYRES">
+                                <Setter Property="Source" Value="Assets/maxresdefault.jpg"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Image.Style>
+            </Image>-->
+            <StackPanel VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" Margin="10 0">
+                    <Image Height="25" Source="Assets/icons8-Payroll Filled.png"/>
+                    <TextBlock Text="Supplier : " Foreground="#002B55"  FontSize="18.667" TextAlignment="Center" Margin="10 0 0 0"/>
+                    <TextBlock Text="{Binding Supplier,UpdateSourceTrigger=PropertyChanged}" Foreground="#002B55"  FontSize="18.667" TextAlignment="Center" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="10 0">
+                    <Image Height="25" Source="Assets/icons8-Bank Building Filled-50.png"/>
+                    <TextBlock Text="Bank : " Foreground="#002B55"  FontSize="18.667" TextAlignment="Center" Margin="10 0 0 0"/>
+                    <TextBlock Text="{Binding Bank,UpdateSourceTrigger=PropertyChanged}" Foreground="#002B55"  FontSize="18.667" TextAlignment="Center" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="10 0">
+                    <Image Height="25" Source="Assets/icons8-Coin Filled-50.png"/>
+                    <TextBlock Text="Balance : " Foreground="#002B55"  FontSize="18.667" TextAlignment="Center" Margin="10 0 0 0"/>
+                    <TextBlock Text="{Binding Balance,UpdateSourceTrigger=PropertyChanged}" Foreground="#002B55"  FontSize="18.667" TextAlignment="Center" />
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
+        <TabControl Grid.Column="1" Grid.Row="1" Margin="10"  Width="1050" Height="550">
             <TabItem Header="Transaction History" Background="#FF074A63" Foreground="#69C6F1" FontSize="16" >
                 <Grid Grid.Row="1" Margin="10">
                     <Grid.ColumnDefinitions>
